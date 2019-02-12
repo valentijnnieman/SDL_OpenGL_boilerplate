@@ -1,0 +1,12 @@
+﻿  main.cpp
+c:\users\valentijn\dropbox\sdl_opengl_boilerplate\sdl_opengl_boilerplate\main.cpp(71): warning C4305: 'argument': truncation from 'double' to 'T'
+          with
+          [
+              T=float
+          ]
+c:\users\valentijn\dropbox\sdl_opengl_boilerplate\sdl_opengl_boilerplate\main.cpp(77): warning C4305: 'argument': truncation from 'double' to 'T'
+          with
+          [
+              T=float
+          ]
+  SDL_OpenGL_boilerplate.vcxproj -> C:\Users\Valentijn\Dropbox\SDL_OpenGL_boilerplate\x64\Debug\SDL_OpenGL_boilerplate.exe
