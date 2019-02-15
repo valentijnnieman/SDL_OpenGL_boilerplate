@@ -5,11 +5,11 @@
 #include <gl\glu.h>
 #include <filesystem>
 
-#include "Engine.hpp"
-#include "Scene.hpp"
-#include "Model.hpp"
-#include "Camera.hpp"
-#include "Light.hpp"
+#include "src/Engine.hpp"
+#include "src/Scene.hpp"
+#include "src/Model.hpp"
+#include "src/Camera.hpp"
+#include "src/Light.hpp"
 
 int IN_MENU_FLAG = 1;
 int IN_GAME_FLAG = 1;
