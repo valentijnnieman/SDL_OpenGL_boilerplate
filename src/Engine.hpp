@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL.h>
-#include <iostream>
 #include <string>
 #include <map>
 
@@ -54,6 +53,9 @@ private:
 	inline static EngineClockService* clockService;
 	inline static EngineSceneService* sceneService;
 
+	inline static SDL_Window *window;
+	inline static SDL_GLContext ctx;
+
 public:
 	~Engine() 
 	{
@@ -68,6 +70,44 @@ public:
 	};
 	// Initializers
 	static void initDefault() {
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
+			SDL_Quit();
+		}
+
+		SDL_DisplayMode dpmode;
+		SDL_GetCurrentDisplayMode(0, &dpmode);
+
+		window = SDL_CreateWindow(
+			"OpenGL Test",
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			dpmode.w/2,
+			dpmode.h/2,
+			SDL_WINDOW_OPENGL
+		);
+
+		ctx = SDL_GL_CreateContext(window);
+
+		int gladInitRes = gladLoadGL();
+		if (!gladInitRes) {
+			fprintf(stderr, "Unable to initialize glad\n");
+			SDL_Quit();
+		}
+
+		SDL_GL_SetAttribute
+		(
+			SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE
+		);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetSwapInterval(1);
+		glEnable(GL_DEPTH_TEST);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+
+
 		EngineTextureService* ts = new EngineTextureService();
 		EngineClockService* cs = new EngineClockService(SDL_GetTicks());
 		EngineSceneService* ss = new EngineSceneService();
@@ -75,6 +115,14 @@ public:
 		Engine::setTextureDirectory("Textures/");
 		Engine::provideClockService(cs);
 		Engine::provideSceneService(ss);
+	};
+
+	// Destroyers
+	static void shutdown() 
+	{
+		SDL_GL_DeleteContext(ctx);
+		SDL_DestroyWindow(window);
+		SDL_Quit();
 	};
 
 	// Providers
@@ -87,6 +135,8 @@ public:
 	static Uint32 getTime(Uint32 currentTime) { return clockService->getTime(currentTime); };
 	static Scene* getCurrentScene() { return sceneService->getCurrentScene(); };
 	static Camera* getCurrentCamera() { return sceneService->getCurrentCamera(); };
+	static SDL_Window* getWindow() { return window; };
+	static SDL_GLContext* getContext() { return &ctx; };
 
 	// Setters
 	static void setTextureDirectory(std::string textureDirectory) { textureService->setTextureDir(textureDirectory); };
@@ -94,6 +144,4 @@ public:
 	static void setCurrentCamera(Camera* camera) { sceneService->setCurrentCamera(camera); };
 
 	// Debug
-	template<class msg>
-	static void Log(msg msg) { std::cout << msg << std::endl; }
 };

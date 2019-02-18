@@ -149,7 +149,6 @@ void Model::setRotation(glm::vec3 rotation, float degree)
 
 void Model::Render()
 {
-	Engine::Log("Model Render()!");
 	material->setAttrib();
 
 	// Calculate model

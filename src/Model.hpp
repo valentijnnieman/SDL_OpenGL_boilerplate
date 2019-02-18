@@ -1,9 +1,7 @@
 #pragma once
 
 #include <SDL.h>
-#include <gl\glew.h>
-#include <SDL_opengl.h>
-#include <gl\glu.h>
+#include "glad/glad.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -13,10 +11,10 @@
 #include <vector>
 #include <string>
 
+#include "Actor.hpp"
 #include "Engine.hpp"
 
 #include "Mesh.hpp"
-#include "Actor.hpp"
 
 class Model : public Actor
 {

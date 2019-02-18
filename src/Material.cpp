@@ -88,7 +88,6 @@ std::string Material::readFile(const char *filePath) {
 
 Material::~Material()
 {
-	Engine::Log("Material destructor");
 	glDeleteProgram(shaderID);
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);

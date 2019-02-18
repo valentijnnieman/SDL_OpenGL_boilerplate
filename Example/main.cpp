@@ -1,15 +1,12 @@
-#pragma once
 #include <SDL.h>
-#include <gl\glew.h>
-#include <SDL_opengl.h>
-#include <gl\glu.h>
+#include "glad/glad.h"
 #include <filesystem>
 
-#include "src/Engine.hpp"
-#include "src/Scene.hpp"
-#include "src/Model.hpp"
-#include "src/Camera.hpp"
-#include "src/Light.hpp"
+#include "../src/Engine.hpp"
+#include "../src/Scene.hpp"
+#include "../src/Model.hpp"
+#include "../src/Camera.hpp"
+#include "../src/Light.hpp"
 
 int IN_MENU_FLAG = 1;
 int IN_GAME_FLAG = 1;
@@ -18,43 +15,6 @@ int main(int, char **)
 {
 	// Setup engine services with defaults
 	Engine::initDefault();
-
-	SDL_Window *window;
-	SDL_GLContext ctx;
-
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
-		return 3;
-	}
-
-	SDL_DisplayMode dpmode;
-	SDL_GetCurrentDisplayMode(0, &dpmode);
-
-	window = SDL_CreateWindow(
-		"OpenGL Test",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		dpmode.w/2,
-		dpmode.h/2,
-		SDL_WINDOW_OPENGL
-	);
-
-	ctx = SDL_GL_CreateContext(window);
-
-	glewExperimental = GL_TRUE;
-	glewInit();
-
-	SDL_GL_SetAttribute
-	(
-		SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE
-	);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetSwapInterval(1);
-	glEnable(GL_DEPTH_TEST);
-	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 	ActorList actors;
 	ActorList lights;
@@ -156,7 +116,7 @@ int main(int, char **)
 
 		radian += 1.0f;
 
-		SDL_GL_SwapWindow(window);
+		SDL_GL_SwapWindow(Engine::getWindow());
 
 		while (SDL_PollEvent(&menuEvent))
 		{
@@ -224,9 +184,6 @@ int main(int, char **)
 			}
 		}
 
-		//oldPosition.x += xVelocity * moveSpeed;
-		//oldPosition.z += zVelocity * moveSpeed;
-
 		oldPosition = oldPosition + zVelocity * moveSpeed * -cam.front;
 		oldPosition = oldPosition + xVelocity * moveSpeed * cam.right;
 
@@ -236,7 +193,6 @@ int main(int, char **)
 	//{
 	//}
 
-	SDL_GL_DeleteContext(ctx);
 	ActorList::iterator it;
 
 	for (it = actors.begin(); it != actors.end(); it++)
@@ -245,8 +201,7 @@ int main(int, char **)
 		delete it->second;
 	}
 
-	SDL_DestroyWindow(window);
+	Engine::shutdown();
 
-	SDL_Quit();
 	return 0;
 }

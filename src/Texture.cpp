@@ -13,7 +13,6 @@ Texture::~Texture()
 void Texture::loadTexture(std::string filename)
 {
 	path = Engine::getTextureDirectory() + filename;
-	Engine::Log(path);
 	SDL_Surface *surface = IMG_Load(path.c_str());
 
 	// Generate OpenGl texture
@@ -36,7 +35,7 @@ void Texture::loadTexture(std::string filename)
 
 		// Generate texture using an SDL_Surface
 		glTexImage2D(GL_TEXTURE_2D, 0, Mode, surface->w, surface->h, 0, Mode, GL_UNSIGNED_BYTE, surface->pixels);
-		glGenerateMipmap(GL_TEXTURE_2D);
+		//glGenerateMipmap(GL_TEXTURE_2D);
 		// Free surface
 		SDL_FreeSurface(surface);
 	}

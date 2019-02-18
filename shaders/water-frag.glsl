@@ -24,5 +24,7 @@ void main()
 	vec3 diffuse = difference * lightColor;
 	vec3 ambientColor = vec3(0.1, 0.1, 0.1);
 	vec3 combinedColor = (ambientColor + diffuse);
-	color = vec4(combinedColor, 1.0) * texture(MainTexture, TexCoord * 4.0);
+	vec4 tex = texture(MainTexture, TexCoord * 4.0);
+	tex.a = 0.0;
+	color = vec4(combinedColor, 1.0) * tex;
 }

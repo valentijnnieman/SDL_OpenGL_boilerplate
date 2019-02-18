@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
-#include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Material.hpp"

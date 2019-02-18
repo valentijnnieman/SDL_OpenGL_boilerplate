@@ -1,7 +1,9 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
-#include "GL/glew.h"
+
+#include "glad/glad.h"
+#include <SDL_opengl.h>
 #include <string>
 
 #include "Engine.hpp"

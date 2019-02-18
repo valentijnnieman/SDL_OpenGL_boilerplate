@@ -126,14 +126,14 @@ xcopy /y C:\Libs\glew-2.1.0\bin\Release\Win32\*.dll ..\Debug\*.dll</Command>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Libs\glm;C:\Libs\glew-2.1.0\include;C:\Libs\SDL2_image-2.0.4\include;C:\Libs\SDL2-devel-2.0.9-VC\SDL2-2.0.9\include;C:\Program Files\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Valentijn\Dropbox\SDL_OpenGL_boilerplate\SDL_OpenGL_boilerplate\vendor\include;C:\Libs\glm;C:\Libs\SDL2_image-2.0.4\include;C:\Libs\SDL2-devel-2.0.9-VC\SDL2-2.0.9\include;C:\Program Files\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Program Files\Assimp\lib\x64;C:\Libs\glew-2.1.0\lib\Release\x64;C:\Libs\SDL2_image-2.0.4\lib\x64;C:\Libs\SDL2-devel-2.0.9-VC\SDL2-2.0.9\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\Assimp\lib\x64;C:\Libs\SDL2_image-2.0.4\lib\x64;C:\Libs\SDL2-devel-2.0.9-VC\SDL2-2.0.9\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -183,15 +183,18 @@ xcopy /y C:\Libs\glew-2.1.0\bin\Release\Win32\*.dll ..\Debug\*.dll</Command>
     <ClCompile Include="src\Actor.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Light.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Example\main.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="vendor\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Actor.hpp" />
     <ClInclude Include="src\Camera.hpp" />
+    <ClInclude Include="src\Debug.h" />
     <ClInclude Include="src\Engine.hpp" />
     <ClInclude Include="src\Light.hpp" />
     <ClInclude Include="src\Material.hpp" />
