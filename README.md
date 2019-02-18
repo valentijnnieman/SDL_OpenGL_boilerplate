@@ -6,7 +6,7 @@ It is a work in progress, and if you are looking for a fully fledged boilerplate
 
 ## What does it use?
 Other than the SDL2 framework and OpenGL, this uses:
-- GLEW for handling OpenGL functions
+- GLAD for handling OpenGL functions
 - Assimp for importing .obj models
 - GLM for vectors, matrices, etc
 - SDL_Image for loading textures
