@@ -1,6 +1,10 @@
 #include <SDL.h>
 #include "glad/glad.h"
+#include <SDL_OpenGL.h>
+#ifdef __APPLE__
+#else
 #include <filesystem>
+#endif
 
 #include "../src/Engine.hpp"
 #include "../src/Scene.hpp"
@@ -11,7 +15,7 @@
 int IN_MENU_FLAG = 1;
 int IN_GAME_FLAG = 1;
 
-int main(int, char **)
+int main(int argc, char *argv[])
 {
 	// Setup engine services with defaults
 	Engine::initDefault();
@@ -55,7 +59,7 @@ int main(int, char **)
 	ocean_8.loadModel("Models/Demo/ocean.obj");
 	Model ocean_9 = Model(glm::vec3(-100.0, 0.0, 200.0), glm::vec3(1.0), &waterMaterial);
 	ocean_9.loadModel("Models/Demo/ocean.obj");
-	
+
 	actors.insert(NamedActor("Ocean", &ocean));
 	actors.insert(NamedActor("Ocean_2", &ocean_2));
 	actors.insert(NamedActor("Ocean_3", &ocean_3));
@@ -109,7 +113,7 @@ int main(int, char **)
 		}
 		// Iterate over Actors in the current ActorList & render them
 		ActorList::iterator actor;
-		for (actor = currentScene->getActors()->begin(); actor != currentScene->getActors()->end(); actor++) 
+		for (actor = currentScene->getActors()->begin(); actor != currentScene->getActors()->end(); actor++)
 		{
 			actor->second->Render();
 		}

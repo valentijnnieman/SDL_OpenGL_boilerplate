@@ -10,6 +10,7 @@
 #include <assimp/postprocess.h>
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "Actor.hpp"
 #include "Engine.hpp"

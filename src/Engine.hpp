@@ -43,7 +43,7 @@ public:
 	void setCurrentCamera(Camera* camera) { currentScene->setMainCamera(camera); };
 };
 
-/* 
+/*
 	Engine class
 */
 class Engine
@@ -57,7 +57,7 @@ private:
 	inline static SDL_GLContext ctx;
 
 public:
-	~Engine() 
+	~Engine()
 	{
 		textureService = nullptr;
 		delete textureService;
@@ -118,7 +118,7 @@ public:
 	};
 
 	// Destroyers
-	static void shutdown() 
+	static void shutdown()
 	{
 		SDL_GL_DeleteContext(ctx);
 		SDL_DestroyWindow(window);
