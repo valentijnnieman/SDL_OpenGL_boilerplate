@@ -1,15 +1,23 @@
-﻿  main.cpp
-c:\users\valentijn\dropbox\sdl_opengl_boilerplate\sdl_opengl_boilerplate\example\main.cpp(31): warning C4305: 'argument': truncation from 'double' to 'T'
+﻿  Actor.cpp
+  Camera.cpp
+  Light.cpp
+  main.cpp
+c:\users\valentijn\dropbox\c++ games\sdl_opengl_boilerplate\sdl_opengl_boilerplate\example\main.cpp(35): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-c:\users\valentijn\dropbox\sdl_opengl_boilerplate\sdl_opengl_boilerplate\example\main.cpp(37): warning C4305: 'argument': truncation from 'double' to 'T'
+c:\users\valentijn\dropbox\c++ games\sdl_opengl_boilerplate\sdl_opengl_boilerplate\example\main.cpp(41): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
   Material.cpp
+  Mesh.cpp
+c:\users\valentijn\dropbox\c++ games\sdl_opengl_boilerplate\sdl_opengl_boilerplate\src\mesh.cpp(52): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Model.cpp
+  Scene.cpp
+  Texture.cpp
   Generating Code...
   glad.c
-  SDL_OpenGL_boilerplate.vcxproj -> C:\Users\Valentijn\Dropbox\SDL_OpenGL_boilerplate\x64\Debug\SDL_OpenGL_boilerplate.exe
+  SDL_OpenGL_boilerplate.vcxproj -> C:\Users\Valentijn\Dropbox\C++ Games\SDL_OpenGL_boilerplate\x64\Debug\SDL_OpenGL_boilerplate.exe

@@ -1,21 +1,8 @@
 #include "Model.hpp"
 
-Model::Model(glm::vec3 position, glm::vec3 scale, Material* mat)
-	:Actor(position, scale)
+Model::Model(glm::vec3* position, glm::vec3* rotation, glm::vec3* scale, Material* mat)
+	:position(position), rotation(rotation), scale(scale), material(mat)
 {
-	material = mat;
-
-	// Calculate model
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, position);
-
-	rotation = glm::vec3(0.0f, 1.0f, 0.0f);
-	rotationAngle = 0.0f;
-
-	glUniformMatrix4fv(glGetUniformLocation(material->shaderID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-
-	// Set the attributes on the shaders of the material
-	material->setAttrib();
 }
 
 void Model::loadModel(std::string path)
@@ -106,7 +93,15 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * ActorList)
 	// 4. height maps
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-	return Mesh(vertices, indices, textures);
+
+	Material* newMat = nullptr;
+	aiColor3D diffColor;
+	material->Get(AI_MATKEY_COLOR_DIFFUSE, diffColor);
+	aiColor3D specColor;
+	material->Get(AI_MATKEY_COLOR_SPECULAR, specColor);
+
+	newMat = new Material(glm::vec3(diffColor.r, diffColor.g, diffColor.b), glm::vec3(specColor.r, specColor.g, specColor.b), this->material->vertexShaderName, this->material->fragmentShaderName);
+	return Mesh(vertices, indices, textures, newMat);
 }
 
 // checks all material textures of a given type and loads the textures if they're not loaded yet.
@@ -141,49 +136,87 @@ std::vector<Texture> Model:: loadMaterialTextures(aiMaterial *mat, aiTextureType
 	return textures;
 }
 
-void Model::setRotation(glm::vec3 rotation, float degree)
-{
-	rotation = glm::normalize(rotation);
-	rotationAngle = glm::radians(degree);
-}
+//void Model::setRotation(glm::vec3 rotation, float degree)
+//{
+//	this->rotation = glm::normalize(rotation);
+//	rotationAngle = glm::radians(degree);
+//}
 
 void Model::Render()
 {
-	material->setAttrib();
+	// Convert rotation vector in degrees to quaternion in radians
+	glm::quat rotationQuat = glm::quat(glm::vec3(glm::radians(rotation->x), glm::radians(rotation->y), glm::radians(rotation->z)));
 
-	// Calculate model
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, position);
-
-	model = glm::scale(model, scale);
-
-	model = glm::rotate(model, rotationAngle, rotation);
-
-	glUniformMatrix4fv(glGetUniformLocation(material->shaderID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-
-	Camera* cam = Engine::getCurrentCamera();
-
-	glm::vec3 f = cam->front;
-
-	// Set the view of the vertex data
-	view = glm::lookAt(
-		cam->position, 
-		cam->position + cam->front,
-		cam->up
-	);
-
-	glUniformMatrix4fv(glGetUniformLocation(material->shaderID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-
-	// Set projection of the vertex data
-	projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1F, 1000.0f);
-	glUniformMatrix4fv(glGetUniformLocation(material->shaderID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-	// Render meshes
 	std::map<std::string, Mesh>::iterator it;
-
 	for (it = meshes.begin(); it != meshes.end(); it++) 
 	{
-        it->second.Render(&material->shaderID);
+		Material* thisMaterial;
+		if (it->second.material != nullptr)
+		{
+			thisMaterial = it->second.material;
+		}
+		else 
+		{
+			thisMaterial = material;
+		}
+		if (thisMaterial != nullptr)
+		{
+			thisMaterial->setAttrib();
+
+			// Calculate model
+			model = glm::mat4(1.0f);
+			glm::mat4 transformMatrix = glm::mat4(1.0f);
+			glm::mat4 rotationMatrix = glm::mat4(1.0f);
+			glm::mat4 scaleMatrix = glm::mat4(1.0f);
+
+			transformMatrix = glm::translate(transformMatrix, *position);
+
+			rotationMatrix = glm::toMat4(rotationQuat);
+
+			scaleMatrix = glm::scale(scaleMatrix, *scale);
+
+			model = transformMatrix * rotationMatrix * scaleMatrix * model;
+
+			glUniformMatrix4fv(glGetUniformLocation(thisMaterial->shaderID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+			Camera* cam = Engine::getCurrentCamera();
+
+			// Set the view of the vertex data
+			view = glm::lookAt(
+				cam->position, 
+				cam->position + cam->front,
+				cam->up
+			);
+
+			glUniformMatrix4fv(glGetUniformLocation(thisMaterial->shaderID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+			// Set projection of the vertex data
+			projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1F, 1000.0f);
+			glUniformMatrix4fv(glGetUniformLocation(thisMaterial->shaderID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+			// Get the current scene's lights
+			if (Engine::getCurrentScene() != nullptr)
+			{
+				LightList* currentLights = Engine::getCurrentScene()->getLights();
+				Light* currentLight = nullptr;
+				if (currentLights->size() > 0)
+				{
+					currentLight = currentLights->begin()->second;
+				}
+				if (currentLight != nullptr)
+				{
+					glm::vec3 lightWorldPos =  projection * model * glm::vec4(currentLight->position, 1.0);
+					// Set the light position (singular for now - get the currentLights' first light)
+					glUniform3f(glGetUniformLocation(thisMaterial->shaderID, "lightPosition"), lightWorldPos.x, lightWorldPos.y, lightWorldPos.z);
+				}
+			}
+
+			//Render meshes
+			it->second.Render(&thisMaterial->shaderID);
+
+			thisMaterial = nullptr;
+			delete thisMaterial;
+		}
 	}
 }
 Mesh* Model::findMesh(std::string id) 

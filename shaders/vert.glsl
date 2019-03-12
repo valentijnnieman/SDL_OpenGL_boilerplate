@@ -17,5 +17,5 @@ void main()
 	TexCoord = v_TexCoord;
 	Normals = normals;
 	// Transform position into world space for frag shader
-	FragPos = vec3(model * vec4(position, 1.0));
+	FragPos = vec3(projection * vec4(position, 1.0));
 }

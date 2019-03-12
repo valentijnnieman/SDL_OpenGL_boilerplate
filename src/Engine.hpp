@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include <string>
 #include <map>
+#include "glad/glad.h"
+#include "btBulletDynamicsCommon.h"
 
 #include "Scene.hpp"
 
@@ -56,6 +58,12 @@ private:
 	inline static SDL_Window *window;
 	inline static SDL_GLContext ctx;
 
+	inline static btDefaultCollisionConfiguration* collisionConfiguration;
+	inline static btCollisionDispatcher* dispatcher;
+	inline static btBroadphaseInterface* broadphase;
+	inline static btSequentialImpulseConstraintSolver* solver;
+	inline static btDiscreteDynamicsWorld* dynamicsWorld;
+
 public:
 	~Engine()
 	{
@@ -67,6 +75,12 @@ public:
 
 		sceneService = nullptr;
 		delete sceneService;
+
+		delete collisionConfiguration;
+		delete dispatcher;
+		delete broadphase;
+		delete solver;
+		delete dynamicsWorld;
 	};
 	// Initializers
 	static void initDefault() {
@@ -83,8 +97,8 @@ public:
 			"OpenGL Test",
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			dpmode.w/2,
-			dpmode.h/2,
+			dpmode.w,
+			dpmode.h,
 			SDL_WINDOW_OPENGL
 		);
 
@@ -115,6 +129,14 @@ public:
 		Engine::setTextureDirectory("Textures/");
 		Engine::provideClockService(cs);
 		Engine::provideSceneService(ss);
+
+		// Setup Bullet physics engine
+		collisionConfiguration = new btDefaultCollisionConfiguration();
+		dispatcher = new btCollisionDispatcher(collisionConfiguration);
+		broadphase = new btDbvtBroadphase();
+		solver = new btSequentialImpulseConstraintSolver;
+		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+		dynamicsWorld->setGravity(btVector3(0,-10,0));
 	};
 
 	// Destroyers
@@ -137,6 +159,7 @@ public:
 	static Camera* getCurrentCamera() { return sceneService->getCurrentCamera(); };
 	static SDL_Window* getWindow() { return window; };
 	static SDL_GLContext* getContext() { return &ctx; };
+	static btDiscreteDynamicsWorld* getWorld() { return dynamicsWorld; };
 
 	// Setters
 	static void setTextureDirectory(std::string textureDirectory) { textureService->setTextureDir(textureDirectory); };

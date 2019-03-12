@@ -9,6 +9,9 @@ Camera::Camera(glm::vec3 position)
 
 	yaw = front.x;
 	pitch = front.y;
+
+	rotation = glm::vec3(0.0, 0.0, -1.0);
+	setRotation(rotation);
 }
 
 void Camera::Render()
@@ -26,20 +29,16 @@ void Camera::Render()
 void Camera::setRotation(glm::vec3 newRotation)
 {
 	float xoffset = newRotation.x;
-    float yoffset = newRotation.y; 
-
-	float sensitivity = 0.05f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
+    float yoffset = -newRotation.y; 
 
 	yaw += xoffset;
 	pitch += yoffset;
 	pitch = std::clamp(pitch, -89.0f, 89.0f);
 
 	glm::vec3 newFront;
-	newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    newFront.y = -sin(glm::radians(pitch));
-    newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	newFront.x = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    newFront.y = sin(glm::radians(pitch));
+    newFront.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 
 	front = glm::normalize(newFront);
 	// Created vec3 below symbolizes "up" in world coordinates

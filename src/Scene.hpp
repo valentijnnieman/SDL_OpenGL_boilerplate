@@ -2,39 +2,41 @@
 
 #include <map>
 #include <string>
-#include "Actor.hpp"
+//#include "Actor.hpp"
 #include "Camera.hpp"
 
-#ifndef ENGINE_TYPES
-#define ENGINE_TYPES
+class Actor;
+class Light;
+
 typedef std::map<std::string, Actor*> ActorList;
 typedef std::pair<std::string, Actor*> NamedActor;
-#endif
+typedef std::map<std::string, Light*> LightList;
+typedef std::pair<std::string, Light*> NamedLight;
 
 class Scene
 {
 private:
 	ActorList* actors;
-	ActorList* lights;
+	LightList* lights;
 	// Only one camera for now
 	Camera* mainCamera;
 
 public:
 	// Getters
 	ActorList* getActors() { return actors; };
-	ActorList* getLights() { return lights; };
+	LightList* getLights() { return lights; };
 	Camera* getMainCamera() { return mainCamera; };
 
 	// Setters
 	void setActors(ActorList* al) { actors = al; };
-	void setLights(ActorList* al) { lights = al; };
+	void setLights(LightList* ll) { lights = ll; };
 	void setMainCamera(Camera* cam) {
 		mainCamera = cam;
 	}
 	
 	//Adders
-	void addLight(NamedActor nActor) {
-		lights->insert(nActor);
+	void addLight(NamedLight nLight) {
+		lights->insert(nLight);
 	}
 	void addActor(NamedActor nActor) {
 		actors->insert(nActor);

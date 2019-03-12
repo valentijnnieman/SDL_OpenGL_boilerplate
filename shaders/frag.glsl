@@ -1,7 +1,8 @@
 #version 330 core
 
 uniform vec3 lightPosition;
-uniform vec3 lambertColor;
+uniform vec3 diffuseColor;
+uniform vec3 specularColor;
 uniform sampler2D MainTexture;
 
 in vec2 TexCoord;
@@ -12,7 +13,7 @@ out vec4 color;
 
 void main()
 {
-	vec3 lightColor = lambertColor;
+	vec3 lightColor = specularColor;
 	// We want unit vectors!
 	vec3 normals = normalize(Normals);
 	// calculate direction vector between light position and fragment position
@@ -21,7 +22,6 @@ void main()
 	float difference = max(dot(normals, lightDirection), 0.0);
 	// Calculate diffuse color
 	vec3 diffuse = difference * lightColor;
-	vec3 ambientColor = vec3(0.0, 0.0, 0.0);
-	vec3 combinedColor = (ambientColor + diffuse);
+	vec3 combinedColor = (diffuseColor + diffuse);
 	color = vec4(combinedColor, 1.0) * texture(MainTexture, TexCoord);
 }

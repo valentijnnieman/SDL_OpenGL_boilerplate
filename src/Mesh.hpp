@@ -19,15 +19,17 @@ private:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
-	Material* material;
 
 	unsigned int VBO, EBO, VAO;
 public:
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, Material* material);
 	void Render(GLuint* shaderID);
 
+	Material* material;
 	void setMaterial(Material* newMaterial) { material = newMaterial; };
 	void setTextures(std::vector<Texture> newTextures) { textures = newTextures; };
+
+	std::vector<Vertex>* getVertices() { return &vertices; };
 
 	~Mesh();
 };

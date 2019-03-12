@@ -1,8 +1,8 @@
 #include "Mesh.hpp"
 
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
-	:vertices(vertices), indices(indices), textures(textures)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, Material* material)
+	:vertices(vertices), indices(indices), textures(textures), material(material)
 {
 	// Generate 1 Vertex Buffer Object, 1 Element Buffer Object, and 1 Vertex Array Object
     glGenBuffers(1, &VBO);
