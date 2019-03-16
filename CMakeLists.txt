@@ -18,8 +18,16 @@ include_directories(${assimp_INCLUDE_DIRS})
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/src
+        ${PROJECT_SOURCE_DIR}/shaders
         ${PROJECT_SOURCE_DIR}/vendor/include
         ${PROJECT_SOURCE_DIR}/vendor/src
+        ${PROJECT_SOURCE_DIR}/vendor/bullet3/src
+        ${PROJECT_SOURCE_DIR}/vendor/glm/
+        ${PROJECT_SOURCE_DIR}/vendor/assimp/include
+        ${PROJECT_SOURCE_DIR}/vendor/SDL-mirror/include
+        ${PROJECT_SOURCE_DIR}/vendor/SDL-mirror/src
+        ${PROJECT_SOURCE_DIR}/vendor/SDL_image/include
+        ${PROJECT_SOURCE_DIR}/vendor/SDL_image/src
 )
 
 file(GLOB PROJECT_HEADERS src/*.hpp)
