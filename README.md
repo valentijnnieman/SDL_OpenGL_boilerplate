@@ -1,5 +1,7 @@
 # Bodhisattva
 
+![](https://freepngimg.com/download/temp/31696-7-buddha-temple-clipart_64x64.ico)
+
 ## A C++ game engine to-be
 Hello! This is my C++ game engine I'm writing out in the open, to make games with and hopefully inspire others to make games and perhaps game engines themselves.
 
