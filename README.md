@@ -1,8 +1,9 @@
-# SDL & OpenGL boilerplate
+# Bodhisattva
 
-## Yes, another boilerplate!
-Hello! This is my boilerplate (I'm calling it a boilerplate but I guess one could call it an engine too) of SDL and OpenGL code.
-It is a work in progress, and if you are looking for a fully fledged boilerplate that is ready to develop the best looking games, this probably isn't it (yet!). However, I'm hoping this is a good starting point for those new to both libraries!
+## A C++ game engine to-be
+Hello! This is my C++ game engine I'm writing out in the open, to make games with and hopefully inspire others to make games and perhaps game engines themselves.
+
+It is a work in progress, and if you are looking for a fully fledged engine that is ready to develop the best looking games, this probably isn't it.
 
 ## What does it use?
 Other than the SDL2 framework and OpenGL, this uses:
