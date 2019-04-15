@@ -1,9 +1,9 @@
 #include <SDL.h>
 #include "glad/glad.h"
-#include <SDL_OpenGL.h>
+// #include <SDL_OpenGL.h>
 #ifdef __APPLE__
 #else
-#include <filesystem>
+// #include <filesystem>
 #endif
 
 #include "../src/Engine.hpp"
