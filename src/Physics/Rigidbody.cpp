@@ -44,6 +44,9 @@ Rigidbody::Rigidbody(float mass, glm::vec3 position, btCollisionShape *col)
 		collider,	// collision shape of body
 		localInertia // local inertia
 	);
+	rigidBodyCI.m_restitution = 1.0f;
+	rigidBodyCI.m_friction = 1.0f;
+	rigidBodyCI.m_rollingFriction = 1.0f;
 	rigidbody = new btRigidBody(rigidBodyCI);
 	rigidbody->setWorldTransform(trans);
 

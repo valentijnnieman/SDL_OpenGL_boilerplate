@@ -103,8 +103,8 @@ void Material::setAttrib()
 	glUseProgram(shaderID);
 
 	// Set the color of the fragment data
-	glUniform3f(glGetUniformLocation(shaderID, "diffuseColor"), diffuseColor.x, diffuseColor.y, diffuseColor.z);
-	glUniform3f(glGetUniformLocation(shaderID, "specularColor"), specularColor.x, specularColor.y, specularColor.z);
+	glUniform3f(glGetUniformLocation(shaderID, "diffuseColor"), diffuseColor.r, diffuseColor.g, diffuseColor.b);
+	glUniform3f(glGetUniformLocation(shaderID, "specularColor"), specularColor.r, specularColor.g, specularColor.b);
 	// Set the current time
 	glUniform1ui(glGetUniformLocation(shaderID, "_Time"), Engine::getTime(SDL_GetTicks()));
 

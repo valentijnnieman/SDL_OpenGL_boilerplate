@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <string>
+#include <stdlib.h>
 #include <map>
 #include "glad/glad.h"
 #include "btBulletDynamicsCommon.h"
@@ -46,6 +47,17 @@ public:
 	void setCurrentCamera(Camera *camera) { currentScene->setMainCamera(camera); };
 };
 
+class EngineRandomService
+{
+public:
+	EngineRandomService()
+	{
+		// Init seed for random number generator
+		srand(time(NULL));
+	}
+	int randomInt(int min, int max) { return rand() % max + min; };
+};
+
 /*
 	Engine class
 */
@@ -55,6 +67,7 @@ private:
 	inline static EngineTextureService *textureService;
 	inline static EngineClockService *clockService;
 	inline static EngineSceneService *sceneService;
+	inline static EngineRandomService *randomService;
 
 	inline static SDL_Window *window;
 	inline static SDL_GLContext ctx;
@@ -76,6 +89,9 @@ public:
 
 		sceneService = nullptr;
 		delete sceneService;
+
+		randomService = nullptr;
+		delete randomService;
 
 		delete collisionConfiguration;
 		delete dispatcher;
@@ -130,10 +146,13 @@ public:
 		EngineTextureService *ts = new EngineTextureService();
 		EngineClockService *cs = new EngineClockService(SDL_GetTicks());
 		EngineSceneService *ss = new EngineSceneService();
+		EngineRandomService *rs = new EngineRandomService();
+
 		Engine::provideTextureService(ts);
 		Engine::setTextureDirectory("Textures/");
 		Engine::provideClockService(cs);
 		Engine::provideSceneService(ss);
+		Engine::provideRandomService(rs);
 
 		Debug::Log("Setting up Bullet...");
 		// Setup Bullet physics engine
@@ -158,10 +177,12 @@ public:
 	inline static void provideTextureService(EngineTextureService *service) { textureService = service; };
 	inline static void provideClockService(EngineClockService *service) { clockService = service; };
 	inline static void provideSceneService(EngineSceneService *service) { sceneService = service; };
+	inline static void provideRandomService(EngineRandomService *service) { randomService = service; };
 
 	// Getters
 	static std::string getTextureDirectory() { return textureService->getTextureDir(); };
 	static Uint32 getTime(Uint32 currentTime) { return clockService->getTime(currentTime); };
+	static int RandomInt(int min, int max) { return randomService->randomInt(min, max); };
 	static Scene *getCurrentScene() { return sceneService->getCurrentScene(); };
 	static Camera *getCurrentCamera() { return sceneService->getCurrentCamera(); };
 	static SDL_Window *getWindow() { return window; };
