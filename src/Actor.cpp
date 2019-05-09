@@ -1,16 +1,19 @@
 #include "Actor.hpp"
 #include "Model.hpp"
 #include "Engine.hpp"
-#include "Debug.h"
+#include "Debug.hpp"
 
 Actor::Actor(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
-	:position(position), rotation(rotation), scale(scale) 
+	: position(position), rotation(rotation), scale(scale)
 {
 	// default static rigidbody (0 mass, no collider)
-	rigidbody = new Rigidbody(0.0, position, new btBoxShape(btVector3(0,0,0)));
+	rigidbody = new Rigidbody(0.0, position, new btBoxShape(btVector3(0, 0, 0)));
 };
-Actor::Actor(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, Rigidbody* rb)
-	:position(position), rotation(rotation), scale(scale), rigidbody(rb){};
+Actor::Actor(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, Rigidbody *rb)
+	: position(position), rotation(rotation), scale(scale), rigidbody(rb)
+{
+	Debug::Log("[Actor] constructor()");
+};
 
 Actor::~Actor()
 {

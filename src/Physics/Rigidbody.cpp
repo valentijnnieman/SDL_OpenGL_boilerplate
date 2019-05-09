@@ -1,8 +1,8 @@
-#include "Rigidbody.h"
+#include "Rigidbody.hpp"
 #include "../Engine.hpp"
 //#include <string>
 
-Rigidbody::Rigidbody(float mass, glm::vec3 position, btCollisionShape* col)
+Rigidbody::Rigidbody(float mass, glm::vec3 position, btCollisionShape *col)
 {
 	if (col != nullptr)
 	{
@@ -36,20 +36,19 @@ Rigidbody::Rigidbody(float mass, glm::vec3 position, btCollisionShape* col)
 
 	trans.setOrigin(btVector3(position.x, position.y, position.z));
 
-	btDefaultMotionState* motionstate = new btDefaultMotionState(trans);
+	btDefaultMotionState *motionstate = new btDefaultMotionState(trans);
 
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
 		btMass,
 		motionstate,
-		collider,  // collision shape of body
-		localInertia    // local inertia
+		collider,	// collision shape of body
+		localInertia // local inertia
 	);
 	rigidbody = new btRigidBody(rigidBodyCI);
 	rigidbody->setWorldTransform(trans);
 
 	Engine::getWorld()->addRigidBody(rigidbody);
 }
-
 
 Rigidbody::~Rigidbody()
 {

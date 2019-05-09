@@ -11,7 +11,7 @@
 #include <glm/gtx/quaternion.hpp> 
 
 #include <assimp/Importer.hpp>
-#include <assimp/Scene.h>
+#include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <vector>
 #include <string>

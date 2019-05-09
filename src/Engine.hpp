@@ -6,6 +6,7 @@
 #include "btBulletDynamicsCommon.h"
 
 #include "Scene.hpp"
+#include "Debug.hpp"
 
 /*
 	Services
@@ -34,15 +35,15 @@ public:
 class EngineSceneService
 {
 private:
-	Scene* currentScene;
-	Camera* currentCamera;
+	Scene *currentScene;
+	Camera *currentCamera;
 
 public:
-	Scene* getCurrentScene() { return currentScene; };
-	Camera* getCurrentCamera() { return currentScene->getMainCamera(); };
+	Scene *getCurrentScene() { return currentScene; };
+	Camera *getCurrentCamera() { return currentScene->getMainCamera(); };
 
-	void setCurrentScene(Scene* scene) { currentScene = scene; };
-	void setCurrentCamera(Camera* camera) { currentScene->setMainCamera(camera); };
+	void setCurrentScene(Scene *scene) { currentScene = scene; };
+	void setCurrentCamera(Camera *camera) { currentScene->setMainCamera(camera); };
 };
 
 /*
@@ -51,18 +52,18 @@ public:
 class Engine
 {
 private:
-	inline static EngineTextureService* textureService;
-	inline static EngineClockService* clockService;
-	inline static EngineSceneService* sceneService;
+	inline static EngineTextureService *textureService;
+	inline static EngineClockService *clockService;
+	inline static EngineSceneService *sceneService;
 
 	inline static SDL_Window *window;
 	inline static SDL_GLContext ctx;
 
-	inline static btDefaultCollisionConfiguration* collisionConfiguration;
-	inline static btCollisionDispatcher* dispatcher;
-	inline static btBroadphaseInterface* broadphase;
-	inline static btSequentialImpulseConstraintSolver* solver;
-	inline static btDiscreteDynamicsWorld* dynamicsWorld;
+	inline static btDefaultCollisionConfiguration *collisionConfiguration;
+	inline static btCollisionDispatcher *dispatcher;
+	inline static btBroadphaseInterface *broadphase;
+	inline static btSequentialImpulseConstraintSolver *solver;
+	inline static btDiscreteDynamicsWorld *dynamicsWorld;
 
 public:
 	~Engine()
@@ -83,7 +84,9 @@ public:
 		delete dynamicsWorld;
 	};
 	// Initializers
-	static void initDefault() {
+	static void initDefault()
+	{
+		Debug::Log("Setting up SDL...");
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
 			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
@@ -92,6 +95,11 @@ public:
 
 		SDL_DisplayMode dpmode;
 		SDL_GetCurrentDisplayMode(0, &dpmode);
+		SDL_GL_SetAttribute(
+			SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 		window = SDL_CreateWindow(
 			"OpenGL Test",
@@ -99,44 +107,43 @@ public:
 			SDL_WINDOWPOS_CENTERED,
 			dpmode.w,
 			dpmode.h,
-			SDL_WINDOW_OPENGL
-		);
+			SDL_WINDOW_OPENGL);
 
 		ctx = SDL_GL_CreateContext(window);
+		Debug::Log("[SDL] Done!");
 
+		Debug::Log("Setting up GLAD...");
 		int gladInitRes = gladLoadGL();
-		if (!gladInitRes) {
+		if (!gladInitRes)
+		{
 			fprintf(stderr, "Unable to initialize glad\n");
 			SDL_Quit();
 		}
+		Debug::Log("[GLAD] Done!");
 
-		SDL_GL_SetAttribute
-		(
-			SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE
-		);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		printf("Supported GLSL version is %s.\n", (char *)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
 		SDL_GL_SetSwapInterval(1);
 		glEnable(GL_DEPTH_TEST);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 
-
-		EngineTextureService* ts = new EngineTextureService();
-		EngineClockService* cs = new EngineClockService(SDL_GetTicks());
-		EngineSceneService* ss = new EngineSceneService();
+		EngineTextureService *ts = new EngineTextureService();
+		EngineClockService *cs = new EngineClockService(SDL_GetTicks());
+		EngineSceneService *ss = new EngineSceneService();
 		Engine::provideTextureService(ts);
 		Engine::setTextureDirectory("Textures/");
 		Engine::provideClockService(cs);
 		Engine::provideSceneService(ss);
 
+		Debug::Log("Setting up Bullet...");
 		// Setup Bullet physics engine
 		collisionConfiguration = new btDefaultCollisionConfiguration();
 		dispatcher = new btCollisionDispatcher(collisionConfiguration);
 		broadphase = new btDbvtBroadphase();
 		solver = new btSequentialImpulseConstraintSolver;
-		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-		dynamicsWorld->setGravity(btVector3(0,-10,0));
+		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+		dynamicsWorld->setGravity(btVector3(0, -10, 0));
+		Debug::Log("[Bullet] Done!");
 	};
 
 	// Destroyers
@@ -148,23 +155,23 @@ public:
 	};
 
 	// Providers
-	inline static void provideTextureService(EngineTextureService* service) { textureService = service; };
-	inline static void provideClockService(EngineClockService* service) { clockService = service; };
-	inline static void provideSceneService(EngineSceneService* service) { sceneService = service; };
+	inline static void provideTextureService(EngineTextureService *service) { textureService = service; };
+	inline static void provideClockService(EngineClockService *service) { clockService = service; };
+	inline static void provideSceneService(EngineSceneService *service) { sceneService = service; };
 
 	// Getters
 	static std::string getTextureDirectory() { return textureService->getTextureDir(); };
 	static Uint32 getTime(Uint32 currentTime) { return clockService->getTime(currentTime); };
-	static Scene* getCurrentScene() { return sceneService->getCurrentScene(); };
-	static Camera* getCurrentCamera() { return sceneService->getCurrentCamera(); };
-	static SDL_Window* getWindow() { return window; };
-	static SDL_GLContext* getContext() { return &ctx; };
-	static btDiscreteDynamicsWorld* getWorld() { return dynamicsWorld; };
+	static Scene *getCurrentScene() { return sceneService->getCurrentScene(); };
+	static Camera *getCurrentCamera() { return sceneService->getCurrentCamera(); };
+	static SDL_Window *getWindow() { return window; };
+	static SDL_GLContext *getContext() { return &ctx; };
+	static btDiscreteDynamicsWorld *getWorld() { return dynamicsWorld; };
 
 	// Setters
 	static void setTextureDirectory(std::string textureDirectory) { textureService->setTextureDir(textureDirectory); };
-	static void setCurrentScene(Scene* scene) { sceneService->setCurrentScene(scene); };
-	static void setCurrentCamera(Camera* camera) { sceneService->setCurrentCamera(camera); };
+	static void setCurrentScene(Scene *scene) { sceneService->setCurrentScene(scene); };
+	static void setCurrentCamera(Camera *camera) { sceneService->setCurrentCamera(camera); };
 
 	// Debug
 };

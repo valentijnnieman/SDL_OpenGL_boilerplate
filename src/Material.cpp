@@ -1,18 +1,23 @@
 #include "Material.hpp"
 
 Material::Material(glm::vec3 diffuseColor, glm::vec3 specularColor, std::string vertName, std::string fragName)
-	:diffuseColor(diffuseColor), specularColor(specularColor), vertexShaderName(vertName), fragmentShaderName(fragName)
+	: diffuseColor(diffuseColor), specularColor(specularColor), vertexShaderName(vertName), fragmentShaderName(fragName)
 {
+	Debug::Log("[Material] constructor()");
 	// Texture defaults to null
 	texture = NULL;
 	// create shaders
+	Debug::Log("[Material] creating shaders...");
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	Debug::Log("[Material] loading vert shader...");
+	Debug::Log(vertName.c_str());
 	// Load default vertex shader
 	std::string vertexSourceString = readFile(vertName.c_str());
-	const char* vertexSourceFromFile = vertexSourceString.c_str();
+	const char *vertexSourceFromFile = vertexSourceString.c_str();
 
+	Debug::Log("[Material] compiling vert shader...");
 	glShaderSource(vertexShader, 1, &vertexSourceFromFile, NULL);
 	glCompileShader(vertexShader);
 
@@ -23,19 +28,23 @@ Material::Material(glm::vec3 diffuseColor, glm::vec3 specularColor, std::string 
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't compile vertex shader: %s", SDL_GetError());
 	}
 
+	Debug::Log("[Material] loading frag shader...");
 	// Load default fragment shader
 	std::string fragmentSourceString = readFile(fragName.c_str());
-	const char* fragmentSourceFromFile = fragmentSourceString.c_str();
+	const char *fragmentSourceFromFile = fragmentSourceString.c_str();
 
+	Debug::Log("[Material] compiling frag shader...");
 	glShaderSource(fragmentShader, 1, &fragmentSourceFromFile, NULL);
 	glCompileShader(fragmentShader);
-	
+
 	GLint fragShaderIsLoaded;
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fragShaderIsLoaded);
 	if (!fragShaderIsLoaded)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't compile fragment shader: %s", SDL_GetError());
 	}
+
+	Debug::Log("[Material] All shaders loaded!");
 
 	// Link the vertex and fragment shader into a shader program
 	shaderID = glCreateProgram();
@@ -55,7 +64,7 @@ Material::Material(std::string vertName, std::string fragName)
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	// Load default vertex shader
 	std::string vertexSourceString = readFile(vertName.c_str());
-	const char* vertexSourceFromFile = vertexSourceString.c_str();
+	const char *vertexSourceFromFile = vertexSourceString.c_str();
 
 	glShaderSource(vertexShader, 1, &vertexSourceFromFile, NULL);
 	glCompileShader(vertexShader);
@@ -69,11 +78,11 @@ Material::Material(std::string vertName, std::string fragName)
 
 	// Load default fragment shader
 	std::string fragmentSourceString = readFile(fragName.c_str());
-	const char* fragmentSourceFromFile = fragmentSourceString.c_str();
+	const char *fragmentSourceFromFile = fragmentSourceString.c_str();
 
 	glShaderSource(fragmentShader, 1, &fragmentSourceFromFile, NULL);
 	glCompileShader(fragmentShader);
-	
+
 	GLint fragShaderIsLoaded;
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fragShaderIsLoaded);
 	if (!fragShaderIsLoaded)
@@ -99,7 +108,7 @@ void Material::setAttrib()
 	// Set the current time
 	glUniform1ui(glGetUniformLocation(shaderID, "_Time"), Engine::getTime(SDL_GetTicks()));
 
-	if (texture != nullptr) 
+	if (texture != nullptr)
 	{
 		// Set the texture
 		glActiveTexture(GL_TEXTURE0);
@@ -109,18 +118,20 @@ void Material::setAttrib()
 	}
 }
 
-std::string Material::readFile(const char *filePath) {
-    std::string content;
-    std::ifstream fileStream(filePath, std::ios::in);
+std::string Material::readFile(const char *filePath)
+{
+	std::string content;
+	std::ifstream fileStream(filePath, std::ios::in);
 
-    std::string line = "";
-    while(!fileStream.eof()) {
-        std::getline(fileStream, line);
-        content.append(line + "\n");
-    }
+	std::string line = "";
+	while (!fileStream.eof())
+	{
+		std::getline(fileStream, line);
+		content.append(line + "\n");
+	}
 
-    fileStream.close();
-    return content;
+	fileStream.close();
+	return content;
 }
 
 Material::~Material()
@@ -128,5 +139,4 @@ Material::~Material()
 	glDeleteProgram(shaderID);
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
-
 }

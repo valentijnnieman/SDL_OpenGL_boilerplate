@@ -52,16 +52,18 @@ if(WIN32)
 
 else(WIN32)
 
+	message(STATUS "Looking in dir: ${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp")
+
 	find_path(
 	  assimp_INCLUDE_DIRS
 	  NAMES postprocess.h scene.h version.h config.h cimport.h
-	  PATHS /usr/local/include/assimp/
+	  PATHS ${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp/include/assimp/
 	)
 
 	find_library(
 	  assimp_LIBRARIES
 	  NAMES assimp libassimp
-	  PATHS /usr/local/lib/
+	  PATHS ${CMAKE_CURRENT_SOURCE_DIR}/vendor/assimp/lib/
 	)
 
 	if (assimp_INCLUDE_DIRS AND assimp_LIBRARIES)
