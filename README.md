@@ -25,6 +25,8 @@ In main.cpp, a small demo scene is set up. There is basic lighting (Phong) and b
 
 ## How can I use this?
 
+Clone the repo, and install submodules by runnin `git submodule update --init --recursive`.
+
 Besides VS project files included, there's also a CMake file that you can use to build the project for your system.
 You'd need to have the dependencies listed above installed (on mac, `brew install sdl2`, `brew install assimp`, `brew install sdl2_image`, `brew install glm` should do it. `glad` is already bundled and should load the correct OpenGL dependencies for you) and then run `cmake CMakeLists.txt`.
 Check out the demo scene set up in main.cpp - it handles basic creation of a Scene, Lights and Camera's, as well as Material creation, Texture loading, and Model loading.
