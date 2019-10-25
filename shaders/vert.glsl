@@ -14,9 +14,9 @@ out vec3 Normals;
 
 void main()
 {
-	gl_Position = projection * view * model * vec4(position, 1.0);
 	TexCoord = v_TexCoord;
-	Normals = normals;
+	FragPos = vec3(model * vec4(position, 1.0));
+	Normals = mat3(transpose(inverse(model))) * normals;
 	// Transform position into world space for frag shader
-	FragPos = vec3(projection * vec4(position, 1.0));
+	gl_Position = projection * view * vec4(FragPos, 1.0);
 }

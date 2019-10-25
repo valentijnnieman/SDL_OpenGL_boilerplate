@@ -1,51 +1,53 @@
 #include "Camera.hpp"
 
-Camera::Camera(glm::vec3 position)
-	:position(position)
-{
-	front = glm::vec3(0.0f, 0.0f, -1.0f);
-	up = glm::vec3(0.0f, 1.0f, 0.0f);
-	right = glm::vec3(1.0f, 0.0f, 0.0f);
+namespace Bodhisattva {
+	Camera::Camera(glm::vec3 position)
+		:position(position)
+	{
+		front = glm::vec3(0.0f, 0.0f, -1.0f);
+		up = glm::vec3(0.0f, 1.0f, 0.0f);
+		right = glm::vec3(1.0f, 0.0f, 0.0f);
 
-	yaw = front.x;
-	pitch = front.y;
+		yaw = front.x;
+		pitch = front.y;
 
-	rotation = glm::vec3(0.0, 0.0, -1.0);
-	setRotation(rotation);
-}
+		rotation = glm::vec3(0.0, 0.0, -1.0);
+		setRotation(rotation);
+	}
 
-void Camera::Render()
-{
-	//ActorList::iterator it;
+	void Camera::Render()
+	{
+		//ActorList::iterator it;
 
-	//ActorList* currentActorList = Engine::getCurrentActorList();
+		//ActorList* currentActorList = Engine::getCurrentActorList();
 
-	//for (it = currentActorList->begin(); it != currentActorList->end(); it++) 
-	//{
-	//	it->second->Render();
-	//}
-}
+		//for (it = currentActorList->begin(); it != currentActorList->end(); it++) 
+		//{
+		//	it->second->Render();
+		//}
+	}
 
-void Camera::setRotation(glm::vec3 newRotation)
-{
-	float xoffset = newRotation.x;
-    float yoffset = -newRotation.y; 
+	void Camera::setRotation(glm::vec3 newRotation)
+	{
+		float xoffset = newRotation.x;
+		float yoffset = -newRotation.y;
 
-	yaw += xoffset;
-	pitch += yoffset;
-	pitch = std::clamp(pitch, -89.0f, 89.0f);
+		yaw += xoffset;
+		pitch += yoffset;
+		pitch = std::clamp(pitch, -89.0f, 89.0f);
 
-	glm::vec3 newFront;
-	newFront.x = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    newFront.y = sin(glm::radians(pitch));
-    newFront.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+		glm::vec3 newFront;
+		newFront.x = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+		newFront.y = sin(glm::radians(pitch));
+		newFront.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 
-	front = glm::normalize(newFront);
-	// Created vec3 below symbolizes "up" in world coordinates
-	right = glm::normalize(glm::cross(front, glm::vec3(0.0, 1.0, 0.0)));
-	up = glm::normalize(glm::cross(right, front));
-}
+		front = glm::normalize(newFront);
+		// Created vec3 below symbolizes "up" in world coordinates
+		right = glm::normalize(glm::cross(front, glm::vec3(0.0, 1.0, 0.0)));
+		up = glm::normalize(glm::cross(right, front));
+	}
 
-Camera::~Camera()
-{
+	Camera::~Camera()
+	{
+	}
 }

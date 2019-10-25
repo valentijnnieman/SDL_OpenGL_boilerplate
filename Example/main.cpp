@@ -1,32 +1,21 @@
-#include <SDL.h>
-#include "glad/glad.h"
-// #include <SDL_OpenGL.h>
-#ifdef __APPLE__
-#else
-// #include <filesystem>
-#endif
-
-#include "../src/Engine.hpp"
-#include "../src/Actor.hpp"
-#include "../src/Scene.hpp"
-#include "../src/Model.hpp"
-#include "../src/Camera.hpp"
-#include "../src/Light.hpp"
-#include "../src/Debug.hpp"
+#include "Engine.hpp"
+#undef main
 
 int IN_MENU_FLAG = 1;
 int IN_GAME_FLAG = 1;
 
+using namespace Bodhisattva;
+
 class Cube : public Actor
 {
 public:
-	Cube(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+	Cube(glm::vec3 position, glm::quat rotation, glm::vec3 scale)
 		: Actor(position, rotation, scale)
 	{
-		material = new Material(glm::vec3(0.0, 0.5, 0.4), glm::vec3(0.1, 1.0, 0.0), "shaders/vert.glsl", "shaders/color-frag.glsl");
+		material = new Material(glm::vec3(0.2, 0.4, 0.4), glm::vec3(0.2, 0.45, 0.45), "shaders/vert.glsl", "shaders/color-frag.glsl");
 		model = new Model(&this->position, &this->rotation, &this->scale, material);
-		model->loadModel("Models/Demo/Cube.obj");
-		rigidbody = new Rigidbody(1.0, position, new btBoxShape(btVector3(1.0, 1.0, 1.0)));
+		model->loadModel("Models/Demo/Cube.obj", false);
+		rigidbody = new Rigidbody(100.0, position, new btBoxShape(btVector3(1.0, 1.0, 1.0)));
 	};
 	~Cube()
 	{
@@ -38,28 +27,13 @@ public:
 class Sphere : public Actor
 {
 public:
-	Sphere(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+	Sphere(glm::vec3 position, glm::quat rotation, glm::vec3 scale)
 		: Actor(position, rotation, scale)
 	{
 		material = new Material(glm::vec3(0.2, 0.5, 0.4), glm::vec3(0.1, 0.4, 0.8), "shaders/vert.glsl", "shaders/color-frag.glsl");
 		model = new Model(&this->position, &this->rotation, &this->scale, material);
-		int a = Engine::RandomInt(0, 3);
-		switch (a)
-		{
-		case 0:
-			model->loadModel("Models/Demo/Sphere_green.obj");
-			break;
-		case 1:
-			model->loadModel("Models/Demo/Sphere_purple.obj");
-			break;
-		case 2:
-			model->loadModel("Models/Demo/Sphere_yellow.obj");
-			break;
-		default:
-			model->loadModel("Models/Demo/Sphere_yellow.obj");
-			break;
-		}
-		rigidbody = new Rigidbody(1.0, position, new btBoxShape(btVector3(1.0, 1.0, 1.0)));
+		model->loadModel("Models/Demo/Sphere.obj", false);
+		rigidbody = new Rigidbody(100.0, position, new btSphereShape(1.0f));
 	};
 	~Sphere()
 	{
@@ -71,15 +45,33 @@ public:
 class Plane : public Actor
 {
 public:
-	Plane(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+	Plane(glm::vec3 position, glm::quat rotation, glm::vec3 scale)
 		: Actor(position, rotation, scale)
 	{
 		material = new Material(glm::vec3(0.2, 0.5, 0.4), glm::vec3(0.3, 0.1, 0.2), "shaders/vert.glsl", "shaders/color-frag.glsl");
 		model = new Model(&this->position, &this->rotation, &this->scale, material);
-		model->loadModel("Models/Demo/Plane.obj");
+		model->loadModel("Models/Demo/Plane.obj", false);
 		rigidbody = new Rigidbody(0.0, position, new btBoxShape(btVector3(100.0, 0.001, 100.0)));
 	};
 	~Plane()
+	{
+		delete material;
+		delete model;
+	};
+};
+
+class Lamp : public Actor
+{
+public:
+	Lamp(glm::vec3 position, glm::quat rotation, glm::vec3 scale)
+		: Actor(position, rotation, scale)
+	{
+		material = new Material(glm::vec3(1.0), glm::vec3(1.0), "shaders/vert.glsl", "shaders/color-frag.glsl");
+		model = new Model(&this->position, &this->rotation, &this->scale, material);
+		model->loadModel("Models/Demo/Cube.obj", false);
+		light = new Light(position, rotation, scale);
+	};
+	~Lamp()
 	{
 		delete material;
 		delete model;
@@ -91,31 +83,29 @@ int main(int argc, char *argv[])
 	// Setup engine services with defaults
 	Engine::initDefault();
 
-	Debug::Log("Boddhisatva!");
-
 	ActorList actors;
 	LightList lights;
 
 	Cube cube(glm::vec3(30.0, 2.0, 10.0), glm::vec3(0.0), glm::vec3(1.0));
 
+	Lamp lamp_01 = Lamp(glm::vec3(10.0f, 20.0f, 20.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	lights.insert(NamedLight("Moonlight", lamp_01.light));
+
 	actors.insert(NamedActor("Cube", &cube));
 
-	actors.insert(NamedActor("sphere_01", new Sphere(glm::vec3(4.0, 15.0, 0.0), glm::vec3(0.0), glm::vec3(1.0))));
+	actors.insert(NamedActor("sphere_01", new Cube(glm::vec3(4.0, 15.0, 0.0), glm::vec3(0.0), glm::vec3(1.0))));
 	actors.insert(NamedActor("sphere_02", new Sphere(glm::vec3(2.0, 12.0, 0.0), glm::vec3(0.0), glm::vec3(1.0))));
-	actors.insert(NamedActor("sphere_03", new Sphere(glm::vec3(1.0, 13.0, 0.0), glm::vec3(0.0), glm::vec3(1.0))));
-	actors.insert(NamedActor("sphere_04", new Sphere(glm::vec3(-6.0, 11.0, 0.0), glm::vec3(0.0), glm::vec3(1.0))));
+	actors.insert(NamedActor("sphere_04", new Cube(glm::vec3(-6.0, 11.0, 0.0), glm::vec3(0.0), glm::vec3(1.0))));
 	actors.insert(NamedActor("sphere_05", new Sphere(glm::vec3(5.0, 15.0, 5.0), glm::vec3(0.0), glm::vec3(1.0))));
-	actors.insert(NamedActor("sphere_06", new Sphere(glm::vec3(2.0, 12.0, 5.0), glm::vec3(0.0), glm::vec3(1.0))));
+	actors.insert(NamedActor("sphere_06", new Cube(glm::vec3(2.0, 12.0, 5.0), glm::vec3(0.0), glm::vec3(1.0))));
 	actors.insert(NamedActor("sphere_07", new Sphere(glm::vec3(-3.0, 13.0, 5.0), glm::vec3(0.0), glm::vec3(1.0))));
-	actors.insert(NamedActor("sphere_08", new Sphere(glm::vec3(-6.0, 11.0, 5.0), glm::vec3(0.0), glm::vec3(1.0))));
+	actors.insert(NamedActor("sphere_08", new Cube(glm::vec3(-6.0, 11.0, 5.0), glm::vec3(0.0), glm::vec3(1.0))));
+	actors.insert(NamedActor("lamp_01", &lamp_01));
 
 	actors.insert(NamedActor("Plane", new Plane(glm::vec3(0.0, -1.0, 0.0), glm::vec3(0.0), glm::vec3(10.0))));
 
-	Light moonLight = Light(glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-
-	lights.insert(NamedLight("Moonlight", &moonLight));
-
-	Camera cam(glm::vec3(0.0f, 4.5f, 40.0f));
+	Camera cam(glm::vec3(0.0f, 40.5f, 40.0f));
+	cam.setRotation(glm::vec3(0.0, 45.0f, 0.0f));
 
 	Debug::Log("Creating scene_01...");
 	Scene scene_01 = Scene();
@@ -141,17 +131,13 @@ int main(int argc, char *argv[])
 	// Get the current Scene to render
 	Scene *currentScene = Engine::getCurrentScene();
 
-	Debug::Log("Ready to render!");
-	//while (IN_MENU_FLAG)
-	//{
-	//}
-
 	while (IN_GAME_FLAG)
 	{
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Engine::getWorld()->stepSimulation(1.0f / 60.0f, 10);
+		Engine::getWorld()->stepSimulation(1.0f / 60.0f, 1);
+		//Engine::getWorld()->debugDrawWorld();
 
 		// Iterate over lights
 		LightList::iterator light;
