@@ -9,6 +9,7 @@
 #include "Scene.hpp"
 #include "Debug.hpp"
 
+#undef main
 /*
 	Services
 */
@@ -77,6 +78,10 @@ namespace Bodhisattva {
 
 		inline static GLDebugDrawer debugDrawer;
 
+		inline static int maxFramesPerSecond = 60;
+		inline static int maxTicksPerFrame = 1000 / maxFramesPerSecond;
+		inline static int frameCount = 0;
+
 	public:
 		~Engine();
 		// Initializers
@@ -105,6 +110,10 @@ namespace Bodhisattva {
 		static void setTextureDirectory(std::string textureDirectory) { textureService->setTextureDir(textureDirectory); };
 		static void setCurrentScene(Scene *scene) { sceneService->setCurrentScene(scene); };
 		static void setCurrentCamera(Camera *camera) { sceneService->setCurrentCamera(camera); };
+
+		// Utils
+		static void renderCurrentScene();
+		static void update();
 
 		// Debug
 	};

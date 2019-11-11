@@ -71,8 +71,8 @@ namespace Bodhisattva {
 			"OpenGL Test",
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			dpmode.w / 1.5f ,
-			dpmode.h / 1.5f,
+			dpmode.w / 3.f ,
+			dpmode.h / 3.f,
 			SDL_WINDOW_OPENGL);
 
 		ctx = SDL_GL_CreateContext(window);
@@ -116,6 +116,44 @@ namespace Bodhisattva {
 		dynamicsWorld->setDebugDrawer(&debugDrawer);
 		Debug::Log("[Bullet] Done!");
 	};
+
+	void Engine::renderCurrentScene() 
+	{
+		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Iterate over lights
+		LightList::iterator light;
+		for (light = sceneService->getCurrentScene()->getLights()->begin(); light != sceneService->getCurrentScene()->getLights()->end(); light++)
+		{
+			light->second->Render();
+		}
+		// Iterate over Actors in the current ActorList & render them
+		ActorList::iterator actor;
+		for (actor = sceneService->getCurrentScene()->getActors()->begin(); actor != sceneService->getCurrentScene()->getActors()->end(); actor++)
+		{
+			actor->second->Render();
+		}
+
+		SDL_GL_SwapWindow(getWindow());
+	}
+
+	void Engine::update() 
+	{
+		btClock capTimer = btClock();
+		float avgFPS = frameCount / (SDL_GetTicks() / 1000.f );
+		Debug::Log(avgFPS);
+
+		frameCount++;
+		//If frame finished early
+		int frameTicks = capTimer.getTimeMilliseconds();
+		Engine::getWorld()->stepSimulation(maxTicksPerFrame - frameTicks, 1);
+		if(frameTicks < maxTicksPerFrame)
+		{
+			//Wait remaining time
+			SDL_Delay(maxTicksPerFrame - frameTicks);
+		}
+	}
 
 	Engine::~Engine()
 	{

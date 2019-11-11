@@ -1,0 +1,17 @@
+﻿  Actor.cpp
+  Camera.cpp
+  Engine.cpp
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(50): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(75): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Light.cpp
+  Material.cpp
+  Mesh.cpp
+  Model.cpp
+  Rigidbody.cpp
+  Scene.cpp
+  Texture.cpp
+  Debug.cpp
+  Generating Code...
+  glad.c
+  bodhisattva_vs_2017.vcxproj -> C:\Users\Valentijn\source\repos\BlockFishing\Debug\bodhisattva_vs_2017.lib

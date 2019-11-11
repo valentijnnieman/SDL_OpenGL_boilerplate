@@ -39,7 +39,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -95,17 +95,24 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2_image.lib;opengl32.lib;assimp-vc140-mt.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\bullet3\x64\Debug;$(SolutionDir)vendor\assimp\x64\Debug;$(SolutionDir)vendor\SDL2_image\x64;$(SolutionDir)vendor\SDL2\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\vendor\bullet3\x64\Debug;$(ProjectDir)..\vendor\assimp\x64\Debug;$(ProjectDir)..\vendor\SDL2_image\x64;$(ProjectDir)..\vendor\SDL2\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d  "$(SolutionDir)vendor\SDL2\x64\Debug\SDL2.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)vendor\SDL2_image\x64\SDL2_image.dll" "$(OutDir)"
-xcopy /y /d  "$(SolutionDir)vendor\assimp\x64\Debug\assimp-vc140-mt.dll" "$(OutDir)"
+      <Command>xcopy /y /d  "$(ProjectDir)..\vendor\SDL2\x64\Debug\SDL2.dll" "$(OutDir)"
+xcopy /y /d  "$(ProjectDir)..\vendor\SDL2_image\x64\SDL2_image.dll" "$(OutDir)"
+xcopy /y /d  "$(ProjectDir)..\vendor\assimp\x64\Debug\assimp-vc140-mt.dll" "$(OutDir)"
 
 if not exist "$(OutDir)shaders" mkdir "$(OutDir)shaders"
-xcopy /y /d  "$(SolutionDir)shaders" "$(OutDir)shaders"</Command>
+xcopy /y /d  "$(ProjectDir)..\shaders" "$(OutDir)shaders"</Command>
     </PostBuildEvent>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;opengl32.lib;assimp-vc140-mt.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\vendor\bullet3\x64\Debug;$(ProjectDir)..\vendor\assimp\x64\Debug;$(ProjectDir)..\vendor\SDL2_image\x64;$(ProjectDir)..\vendor\SDL2\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

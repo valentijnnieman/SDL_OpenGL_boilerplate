@@ -133,28 +133,9 @@ int main(int argc, char *argv[])
 
 	while (IN_GAME_FLAG)
 	{
-		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		Engine::getWorld()->stepSimulation(1.0f / 60.0f, 1);
-		//Engine::getWorld()->debugDrawWorld();
-
-		// Iterate over lights
-		LightList::iterator light;
-		for (light = currentScene->getLights()->begin(); light != currentScene->getLights()->end(); light++)
-		{
-			light->second->Render();
-		}
-		// Iterate over Actors in the current ActorList & render them
-		ActorList::iterator actor;
-		for (actor = currentScene->getActors()->begin(); actor != currentScene->getActors()->end(); actor++)
-		{
-			actor->second->Render();
-		}
+		Engine::renderCurrentScene();
 
 		radian += 1.0f;
-
-		SDL_GL_SwapWindow(Engine::getWindow());
 
 		while (SDL_PollEvent(&menuEvent))
 		{
@@ -222,6 +203,8 @@ int main(int argc, char *argv[])
 		oldPosition = oldPosition + xVelocity * moveSpeed * cam.right;
 
 		cam.position = oldPosition;
+
+		Engine::update();
 	}
 	ActorList::iterator it;
 

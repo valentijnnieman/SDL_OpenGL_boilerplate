@@ -1,0 +1,48 @@
+﻿  Engine.cpp
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(50): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(75): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(149): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'int', possible loss of data
+c:\users\valentijn\dropbox\c++ games\bodhisattva\src\engine.cpp(150): warning C4244: 'argument': conversion from 'int' to 'btScalar', possible loss of data
+SDL2_image.lib(SDL2_image.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+SDL2_image.lib(SDL2_image.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+assimp-vc140-mt.lib(assimp-vc140-mt.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+assimp-vc140-mt.lib(assimp-vc140-mt.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+kernel32.lib(KERNEL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+kernel32.lib(KERNEL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+user32.lib(USER32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+user32.lib(USER32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+gdi32.lib(GDI32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+gdi32.lib(GDI32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+winspool.lib(WINSPOOL.DRV) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+winspool.lib(WINSPOOL.DRV) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+comdlg32.lib(COMDLG32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+comdlg32.lib(COMDLG32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+advapi32.lib(ADVAPI32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+advapi32.lib(ADVAPI32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+shell32.lib(SHELL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+shell32.lib(SHELL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+ole32.lib(ole32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+ole32.lib(ole32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+oleaut32.lib(OLEAUT32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+oleaut32.lib(OLEAUT32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+uuid.lib(propkeys.obj) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+uuid.lib(guids.obj) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+odbc32.lib(ODBC32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
+odbc32.lib(ODBC32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+Model.obj : warning LNK4006: "public: enum aiReturn __cdecl aiMaterial::Get(char const *,unsigned int,unsigned int,struct aiColor3D &)const " (?Get@aiMaterial@@QEBA?AW4aiReturn@@PEBDIIAEAUaiColor3D@@@Z) already defined in assimp-vc140-mt.lib(assimp-vc140-mt.dll); second definition ignored
+Model.obj : warning LNK4006: "public: enum aiReturn __cdecl aiMaterial::GetTexture(enum aiTextureType,unsigned int,struct aiString *,enum aiTextureMapping *,unsigned int *,float *,enum aiTextureOp *,enum aiTextureMapMode *)const " (?GetTexture@aiMaterial@@QEBA?AW4aiReturn@@W4aiTextureType@@IPEAUaiString@@PEAW4aiTextureMapping@@PEAIPEAMPEAW4aiTextureOp@@PEAW4aiTextureMapMode@@@Z) already defined in assimp-vc140-mt.lib(assimp-vc140-mt.dll); second definition ignored
+Model.obj : warning LNK4006: "public: unsigned int __cdecl aiMaterial::GetTextureCount(enum aiTextureType)const " (?GetTextureCount@aiMaterial@@QEBAIW4aiTextureType@@@Z) already defined in assimp-vc140-mt.lib(assimp-vc140-mt.dll); second definition ignored
+Model.obj : warning LNK4006: "public: struct aiScene const * __cdecl Assimp::Importer::ReadFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,unsigned int)" (?ReadFile@Importer@Assimp@@QEAAPEBUaiScene@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@I@Z) already defined in assimp-vc140-mt.lib(assimp-vc140-mt.dll); second definition ignored
+  bodhisattva_vs_2017.vcxproj -> C:\Users\Valentijn\Dropbox\C++ Games\bodhisattva\x64\Debug\bodhisattva_vs_2017.lib
+  C:\Users\Valentijn\Dropbox\C++ Games\bodhisattva\bodhisattva_vs_2017\..\vendor\SDL2\x64\Debug\SDL2.dll
+  1 File(s) copied
+  C:\Users\Valentijn\Dropbox\C++ Games\bodhisattva\bodhisattva_vs_2017\..\vendor\SDL2_image\x64\SDL2_image.dll
+  1 File(s) copied
+  C:\Users\Valentijn\Dropbox\C++ Games\bodhisattva\bodhisattva_vs_2017\..\vendor\assimp\x64\Debug\assimp-vc140-mt.dll
+  1 File(s) copied
+  C:\Users\Valentijn\Dropbox\C++ Games\bodhisattva\bodhisattva_vs_2017\..\shaders\boat-vert.glsl
+  C:\Users\Valentijn\Dropbox\C++ Games\bodhisattva\bodhisattva_vs_2017\..\shaders\color-block-frag.glsl
+  2 File(s) copied

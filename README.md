@@ -19,7 +19,7 @@ Other than the SDL2 framework and OpenGL, this uses:
 
 ## Demo scene
 
-![Demo gif](demo.gif?raw=true "Demo")
+![Demo gif](example_b.gif?raw=true "Demo")
 
 In main.cpp, a small demo scene is set up. There is basic lighting (Phong) and basic shading, as well as first person camera control. You can press escape to quit.
 

@@ -57,8 +57,8 @@ namespace Bodhisattva {
 
 	Rigidbody::~Rigidbody()
 	{
-		//delete collider;
-		//delete rigidbody->getMotionState();
-		//delete rigidbody;
+		delete collider;
+		delete rigidbody->getMotionState();
+		delete rigidbody;
 	}
 }
